@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ExtraText">
 
     <application
         android:allowBackup="true"
@@ -23,20 +24,16 @@
         </activity>
 
     </application>
-    <service
-        android:name=".java.MyFirebaseMessagingService"
-        android:exported="false"
-        tools:ignore="WrongManifestParent">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
-    </service>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"
+        tools:ignore="WrongManifestParent" />
+    <uses-permission android:name="android.permission.INTERNET"
+        tools:ignore="WrongManifestParent" />
     <meta-data
-        android:name="com.google.firebase.messaging.default_notification_icon"
-        android:resource="@drawable/ic_stat_ic_notification" />
+        android:name="com.google.firebase.messaging.default_notification_icon"/>
     <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
          notification message. See README(https://goo.gl/6BKBk7) for more. -->
     <meta-data
-        android:name="com.google.firebase.messaging.default_notification_color"
-        android:resource="@color/colorAccent" />
+        android:name="com.google.firebase.messaging.default_notification_color"/>
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel_id"/>
 </manifest>
