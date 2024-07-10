@@ -22,12 +22,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.iid.ACTION_TOKEN"/>
+            </intent-filter>
+        </service>
+
 
     </application>
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"
         tools:ignore="WrongManifestParent" />
     <uses-permission android:name="android.permission.INTERNET"
         tools:ignore="WrongManifestParent" />
+<!--    <permission-->
+<!--        android:name="com.google.android.c2dm.permission.RECEIVE"-->
+<!--        android:protectionLevel="normal"/>-->
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"/>
     <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
@@ -36,4 +48,5 @@
         android:name="com.google.firebase.messaging.default_notification_color"/>
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_channel_id"/>
+
 </manifest>
