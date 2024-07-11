@@ -1,6 +1,13 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+
 plugins {
     id("com.android.application")
+    id("kotlin-android")
     id("com.google.gms.google-services")
+}
+
+tasks {
+    check.dependsOn("assembleDebugAndroidTest")
 }
 
 android {
@@ -9,40 +16,67 @@ android {
 
     defaultConfig {
         applicationId = "com.example.testserver"
-        minSdk = 23
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+    packaging {
+        resources.excludes.add("LICENSE.txt")
+    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+    lint {
+        abortOnError = false
     }
 }
 
 dependencies {
+//    implementation(project(":internal:lintchecks"))
+//    implementation(project(":internal:chooserx"))
+    implementation("androidx.annotation:annotation:1.8.0")
+    implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
+    implementation("androidx.core:core-ktx:1.13.1")
 
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    implementation(libs.firebase.messaging)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    // Required when asking for permission to post notifications (starting in Android 13)
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.1")
+
+    implementation("com.google.android.material:material:1.12.0")
+
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+
+    // Firebase Cloud Messaging
     implementation("com.google.firebase:firebase-messaging")
+
+    // For an optimal experience using FCM, add the Firebase SDK
+    // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
+
+    implementation("com.google.firebase:firebase-installations:18.0.0")
+
+    implementation("androidx.work:work-runtime:2.9.0")
+
+    // Testing dependencies
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.annotation:annotation:1.8.0")
 }
